@@ -10,6 +10,14 @@
 |base64|6.1MB|1.9MB|
 |base58|6.2MB|2.1MB|
 
+如果将本地原始文件直接压缩，效果会更好，体积更小
+|编码格式|原始文件大小|压缩后文件大小|
+|---|---:|---:|
+|jsonParsed|11MB|1.4MB|
+|base64|6.1MB|1.2MB|
+|base58|6.2MB|1.5MB|
+
+
 ## jsonParsed
 ```bash
 curl -X POST "https://go.getblock.us/${GETBLOCK_ACCESS_TOKEN}/" \
