@@ -1,0 +1,77 @@
+# Confluent Kafka 配置示例文件
+# 复制此文件为 kafka.yaml 并填入你的实际配置信息
+
+kafka:
+  # Confluent Cloud 集群地址
+  # 格式: <cluster-id>.<region>.<cloud-provider>.confluent.cloud:9092
+  # 示例: pkc-xxxxx.us-east-1.aws.confluent.cloud:9092
+  bootstrap_servers: "YOUR_CLUSTER_ENDPOINT:9092"
+  
+  # 安全协议 (固定值)
+  security_protocol: "SASL_SSL"
+  
+  # SASL 认证机制 (固定值)
+  sasl_mechanism: "PLAIN"
+  
+  # API Key (从 Confluent Cloud 控制台获取)
+  sasl_username: "YOUR_API_KEY"
+  
+  # API Secret (从 Confluent Cloud 控制台获取)
+  sasl_password: "YOUR_API_SECRET"
+  
+producer:
+  # 要发送消息的 topic 名称
+  topic: "your-topic-name"
+  
+  # 消息确认级别
+  # "0" = 不等待确认 (最快，但可能丢失消息)
+  # "1" = 等待 leader 确认
+  # "all" = 等待所有副本确认 (最安全)
+  acks: "all"
+  
+  # 重试次数 (发送失败时的重试次数)
+  retries: 3
+  
+  # 批处理大小 (字节)
+  # 较大的值可以提高吞吐量，但会增加延迟
+  batch_size: 16384
+  
+  # 延迟时间 (毫秒)
+  # Producer 等待更多消息来填充批次的时间
+  linger_ms: 1
+  
+consumer:
+  # 要消费消息的 topic 名称 (通常与 producer.topic 相同)
+  topic: "your-topic-name"
+  
+  # Consumer Group ID
+  # 同一个 group 内的 consumer 会分担消费任务
+  group_id: "your-consumer-group"
+  
+  # 当没有初始偏移量或偏移量超出范围时的处理策略
+  # "earliest" = 从最早的消息开始消费
+  # "latest" = 从最新的消息开始消费
+  auto_offset_reset: "earliest"
+  
+  # 是否自动提交偏移量
+  enable_auto_commit: true
+  
+  # 自动提交偏移量的间隔 (毫秒)
+  auto_commit_interval_ms: 1000
+  
+  # 会话超时时间 (毫秒)
+  # Consumer 与 broker 之间的心跳超时时间
+  session_timeout_ms: 30000
+
+# 配置说明:
+# 1. 将此文件复制为 kafka.yaml
+# 2. 在 Confluent Cloud 控制台获取你的集群信息:
+#    - 集群地址 (bootstrap_servers)
+#    - API Key 和 Secret (sasl_username/sasl_password)
+# 3. 创建或选择一个 topic
+# 4. 根据需要调整其他配置参数
+#
+# 注意事项:
+# - API Key 需要有对应 topic 的读写权限
+# - 确保 topic 已存在或开启了自动创建功能
+# - 生产环境建议使用更严格的安全配置
